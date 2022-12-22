@@ -12,7 +12,7 @@ public class Goods {
 		countOfGoods = Goods.countOfGoods +1; //'Good.' 내부 같은 클래스라 생략 가능하다
 	}
 	
-	public Goods(String name. int price, int countStock, int countsold) {
+	public Goods(String name, int price, int countStock, int countsold) {
 			this.name =name;
 			this.price= price;
 			this.countStock =countStock;
