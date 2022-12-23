@@ -10,3 +10,9 @@ public class PhoneApp {
 		phone.execute("앱");
 	}
 }
+
+
+
+//다운로드해서 음악재생
+//통화기능시작
+//앱실행

@@ -2,6 +2,11 @@ package prob4;
 
 public class SoundTest {
 
+	
+	private static void printSound( Soundable soundable ) {
+		System.out.println( soundable.sound() );
+	}
+	
 	public static void main(String[] args) {
 		printSound( new Cat() );
 		printSound( new Dog() );
@@ -9,7 +14,5 @@ public class SoundTest {
 		printSound( new Duck() );
 	}
 	
-	private static void printSound( Soundable soundable ) {
-		System.out.println( soundable.sound() );
-	}
+	
 }
