@@ -1,5 +1,6 @@
 package prob02;
 
+
 import java.util.Scanner;
 
 public class GoodsApp {
@@ -19,15 +20,19 @@ public class GoodsApp {
 			
 			goods[i]=new Goods();
 			
+			goods[i].setBev(infos[0]);
+ 			goods[i].setPrice(Integer.valueOf(infos[1]));
+ 			goods[i].setCount(Integer.valueOf(infos[2]));
 		
-		
-		
+ 			
+ 			for(int j=0; j<COUNT_GOODS ;j++) {
+ 				goods[j].show();
+ 			}
+ 			
 				
 				
-		for(int j=0; j<COUNT_GOODS ;j++) {
-			Good[j].bev(info[j]);
 		
-		}
 		scanner.close();
 	
-	}
+}
+	}}
