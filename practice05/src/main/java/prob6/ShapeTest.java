@@ -1,7 +1,6 @@
 package prob6;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class ShapeTest {
 
@@ -24,3 +23,5 @@ public class ShapeTest {
 		}
 	}
 }
+
+
