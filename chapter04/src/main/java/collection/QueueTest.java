@@ -25,6 +25,8 @@ public class QueueTest {
 		System.out.println(q.peek());
 		System.out.println(q.poll());
 		System.out.println(q.poll());
+		
+		//비어 있는 경우 null값 출력함.
 		System.out.println(q.poll());
 	}
 

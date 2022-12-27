@@ -1,4 +1,4 @@
-package com.douzone.pain.point;
+package com.douzone.paint.point;
 
 import com.douzone.paint.i.Drawable;
 

@@ -36,7 +36,16 @@ public class LoginMain {
 	}
 	
 	public static void login(List<User> users, User user ){
-		/* 코드 작성 사용자가 입력한거가 있닌지 확인후 서로 맞는 지확인*/
+		for(int i= 0;i <users.size() ;i++) {
+			if(users.get(i).getId().equals(user.getId())&& users.get(i).getPassword().equals(user.getPassword())) {
+				break;
+			}
+			else if(!users.get(i).getId().equals(user.getId())&& users.get(i).getPassword().equals(user.getPassword())){
+				throw new UserNotFoundException();
+			}
+			else
+				throw new PasswordDismatchException();
+		}
 		
 		
 		
