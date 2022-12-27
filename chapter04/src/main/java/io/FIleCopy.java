@@ -31,13 +31,19 @@ public class FIleCopy {
 		}catch(IOException e) {
 			System.out.println("error:"+ e);
 		}finally {
-			try {
-				if(is !=null) {
-					is.close();
-					os.close();
-					}
-				}}
+			 try {
+		            if(is != null) {
+		               is.close();
+		            }
+		            if(os != null) {
+		               os.close();
+		            } 
+		         }catch(IOException e) {
+		            e.printStackTrace();      
+		         }
+		      }
+
 			}
-			}
+}
 	
 
