@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class TCPServer {
 
@@ -21,7 +22,7 @@ public class TCPServer {
 			// Socket에  InetSocketaddress(IP Address + Port)를 바인딩 한다.
 			//InetAddress.getLocalHoset().getHostAddress() ->로 주소 구하는 코드 작성해둘수도 있다.
 			//IPAddress는 일반적으로 0.0.0.0 특정호스트IP에 바인딩 하지 않는다. <-많은 IP가 존재하기 때문에
-			serverSocket.bind(new InetSocketAddress("0.0.0.0",5000));
+			serverSocket.bind(new InetSocketAddress("0.0.0.0",5000), 10);
 			
 			//3. Accept
 			
@@ -53,6 +54,8 @@ public class TCPServer {
 				//6.데이터 쓰기
 				os.write(data.getBytes("utf-8"));
 			}
+			}catch(SocketException ex) {
+				System.out.println("[server]suddenlyclosed by client" );
 			}catch(IOException ex) {
 				System.out.println("[server]error :" + ex);
 			}finally {
