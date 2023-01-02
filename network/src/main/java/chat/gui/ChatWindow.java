@@ -39,7 +39,7 @@ public class ChatWindow {
 				sendMessage();
 			}
 		});
-
+		
 		// Textfield
 		textField.setColumns(80);
 
@@ -64,5 +64,10 @@ public class ChatWindow {
 	}
 	
 	private void sendMessage() {
+		String message = textField.getText();	
+		System.out.println("메세지 보내는 프로토콜 "+ message);
+		
+		textField.setText(" ");  //70-71 입력창 reset
+		textField.requestFocus();
 	}
 }
