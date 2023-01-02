@@ -15,51 +15,48 @@ public class ChatServerThread extends Thread {
 	private List<Writer> listWriters;
 	private String nickname;
 	private Socket socket;
-	BufferedReader br =null;
-	PrintWriter pw =null;
+
 	
-	public void CharServerThread(Socket socket, List<Writer> listWriters) {
+	public ChatServerThread(Socket socket, List<Writer> listWriters) {
+		
 		this.socket =socket;
 		this.listWriters=listWriters;
-	//1. Remote Host Information
-	
-	//2. 스트림 얻기
-	BufferedReader in;
+		}
+		@Override
+		public void run() {
+			super.run();
 	try {
-		 br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-		pw = new PrintWriter( new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
+	BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+	PrintWriter printWriter = new PrintWriter( new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
 	
 		while(true) {
-			String request = br.readLine();
+			String request = bufferedReader.readLine();
+			if(request == null) {
+				ChatServer.log("클라이언트로 부터 연결 끊김");
+				doQuit(printWriter);
+				break;
+				}
 			String[] tokens =request.split(" : ");
 			if("join".equals(tokens[0])) {
-				doJoin(tokens[1], pw);
+				doJoin(tokens[1], printWriter);
 			} else if("message".equals(tokens[0])) {
 				doMessage(tokens[1]);
 			}else if("quit".equals(tokens[0])) {
-				doQuit(pw);
+				doQuit(printWriter);
 			}
 			else {
-				ChatServer.log ("에러: 알수 없는 요청( " + tokens[0] + ")" );
+				log ("에러: 알수 없는 요청( " + tokens[0] + ")" );
 			}
+			}
+	
+			}catch (IOException e) {
+	           log("채팅방을 나갔습니다.");}
+	
 		}
-	} catch (IOException e) {
-			e.printStackTrace();
-	}
-	
-	
-	//3. 요청 처리 
-
-//			if(request ==null) {
-//				ChatServer.log("클라이언트로 부터 연결 끊김");
-//				doQuit(out);
-//				break;
-//			}
-		
-	//4. 프로토콜 분석
-	
-	}
-	
+	private void log(String string) {
+		  System.out.println(string);
+			
+		}
 	private void doJoin(String nickName, Writer writer) throws IOException {
 		this.nickname=nickName;
 		String data = nickName + "님이 참여하였습니다." ;
@@ -100,9 +97,10 @@ public class ChatServerThread extends Thread {
 		}
 	
 		private void removeWriter(Writer writer) {
-			listWriters.remove(pw);
+			listWriters.remove(writer);
 		}
 
-
+		
+		
 
 }
