@@ -1,37 +1,42 @@
 package chat;
 
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class ChatClientThread extends Thread {
-	Socket socket =null;
-	Scanner scanner = new Scanner(System.in);
 	
-	public ChatClientThread(Socket socket) {
-		this.socket=socket;
+	
+	BufferedReader bufferedReader;
+	
+	public ChatClientThread(BufferedReader bufferedReader) {
+		this.bufferedReader=bufferedReader;
+		
 	}
 	
 	@Override
 	public void run() {
 		try {
-		
-			OutputStream out = socket.getOutputStream();
-            		
-			PrintWriter writer = new PrintWriter(out, true);
-			
+			String message =null;
+
 			while(true) { 
-				writer.println(scanner.nextLine()); 
+				 message = bufferedReader.readLine();
+				 System.out.println(message);
+				//writer.println(scanner.nextLine()); 
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace(); 
+		} finally {
+			
 		}
 		
-		super.run();
+		
+	}
+	
 	}
 
 	
 	
-}
+

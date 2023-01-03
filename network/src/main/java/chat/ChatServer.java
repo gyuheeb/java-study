@@ -31,43 +31,21 @@ public class ChatServer {
 		try {		
 			socket = new Socket();
 			serverSocket =new ServerSocket();
-			//1. 키보드 
+
 			List<Writer> listWriters = new ArrayList<>();
 			scanner = new Scanner(System.in);
-			//2. socket 생성
-			
-			//3. 연결
+		
+	
 			serverSocket.bind(new InetSocketAddress("0.0.0.0",PORT),10);
 			log("start...[PORT :" + PORT + "]");
-			//4. reader/writer 생성
-			socket = serverSocket.accept();
+	
 			
 			
-		br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
-		pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"), true);
-			
-			//5. join 프로토클
-			System. out. print("닉네임>" ) ;
-			String nickname = scanner.nextLine () ;
-			pw.println( "join:"+ nickname);
-			pw.flush();
-					
-			//6. ChatClientReceiveThread 시작
-				
-		//7. 키보드 입력 처리
 		while ( true ) {
 			socket = serverSocket.accept();
+			
 			new ChatServerThread(socket, listWriters).start();
-//			String inputMessage = br.readLine();
-//			if(inputMessage.equals("quit")) {
-//				System.out.println("종료하였습니다.");
-//				break;
-//			}
-//			
-//		System.out.println(nickname+" : ");
-//		String input = scanner.nextLine ();
-//		pw.write(inputMessage+"\n");
-//		pw.flush();
+
 		}
 		}catch(SocketException e) {
 			System.out.println("[server] socket connect failed"+e);
@@ -77,17 +55,16 @@ public class ChatServer {
 		}finally {
 			try {
 				if(serverSocket != null && !serverSocket.isClosed()) {
-					scanner.close();
-			serverSocket.close();
+					
+					serverSocket.close();
 				}
-				
+				scanner.close();
 			}catch(IOException ex){
 				log("error : "+ ex);
 			}
 		}
 		
 }
-
 	static void log(String message) {
 		System.out.println("[ChatServer ] " + message);
 		

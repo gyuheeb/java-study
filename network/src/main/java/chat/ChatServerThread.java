@@ -15,92 +15,93 @@ public class ChatServerThread extends Thread {
 	private List<Writer> listWriters;
 	private String nickname;
 	private Socket socket;
-
+	PrintWriter printWriter = null;
+	BufferedReader bufferedReader=null;
 	
 	public ChatServerThread(Socket socket, List<Writer> listWriters) {
 		
 		this.socket =socket;
 		this.listWriters=listWriters;
 		}
+	
 		@Override
 		public void run() {
-			super.run();
-	try {
-	BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-	PrintWriter printWriter = new PrintWriter( new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
+		
+			try {
+				bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				printWriter = new PrintWriter( new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
 	
-		while(true) {
-			String request = bufferedReader.readLine();
-			if(request == null) {
-				ChatServer.log("클라이언트로 부터 연결 끊김");
-				doQuit(printWriter);
-				break;
+				while(true) {
+					String request = bufferedReader.readLine();
+					if(request == null) {
+						ChatServer.log("클라이언트로 부터 연결 끊김");
+						doQuit(printWriter);
+						break;
+						}
+					String[] tokens =request.split(":");
+					if("join".equals(tokens[0])) {
+						doJoin(tokens[1], printWriter);
+					} else if("message".equals(tokens[0])) {
+						doMessage(tokens[1]);
+					}else if("quit".equals(tokens[0])) {
+						doQuit(printWriter);
+					}
+					
+					}
+			
+					}catch (IOException e) {
+			           log("채팅방을 나갔습니다.");}
+			
 				}
-			String[] tokens =request.split(" : ");
-			if("join".equals(tokens[0])) {
-				doJoin(tokens[1], printWriter);
-			} else if("message".equals(tokens[0])) {
-				doMessage(tokens[1]);
-			}else if("quit".equals(tokens[0])) {
-				doQuit(printWriter);
-			}
-			else {
-				log ("에러: 알수 없는 요청( " + tokens[0] + ")" );
-			}
-			}
-	
-			}catch (IOException e) {
-	           log("채팅방을 나갔습니다.");}
-	
-		}
-	private void log(String string) {
-		  System.out.println(string);
+		
+		private void doJoin(String nickname, Writer writer) {
+			this.nickname=nickname;
+			String data = nickname + "님이 참여하였습니다." ;
+			System.out.println(nickname + "님 참여");
+			
+			broadcast(data);
+			/*writer pool에 저장*/
+			addWriter(writer);
+			//ack
+			printWriter.println("join:ok");
+		
+			
 			
 		}
-	private void doJoin(String nickName, Writer writer) throws IOException {
-		this.nickname=nickName;
-		String data = nickName + "님이 참여하였습니다." ;
-		broadcast(data);
-		
-		/*writer pool에 저장*/
-		addWriter(writer);
-		
-		//ack
-		((PrintWriter) writer).println("join:ok");
-        writer.flush();
-		
-	}
-		private void addWriter(Writer writer) {
-			synchronized(listWriters) {
-				listWriters.add(writer);
-			}
-		}
-	
-		private void broadcast(String data) {
-			synchronized(listWriters) {
-				for(Writer writer:listWriters) {
-					PrintWriter printWriter = (PrintWriter)writer;
-					printWriter.println(data);
-					printWriter.flush();
+			private void addWriter(Writer writer) {
+				synchronized(listWriters) {
+					listWriters.add(writer);
 				}
 			}
-		}
-		private void doMessage (String message) throws IOException {
-			String data = nickname + " : "+message;
-			broadcast(data);
-		}
-	
-		private void doQuit(Writer writer) throws IOException{
-			removeWriter(writer);
-			String data = nickname +"님이 퇴장하였습니다.";
-			broadcast(data);
-		}
-	
-		private void removeWriter(Writer writer) {
-			listWriters.remove(writer);
-		}
-
 		
+			private void broadcast(String data) {
+				synchronized(listWriters) {
+					for(Writer writer:listWriters) {
+						PrintWriter printWriter = (PrintWriter)writer;
+						printWriter.println(nickname + ":" + data);
+						printWriter.flush();
+					}
+				}
+			}
+			private void doMessage (String message) throws IOException {
+				String data = message;
+				broadcast(data);
+			}
 		
-
-}
+			private void doQuit(Writer writer) throws IOException{
+				removeWriter(writer);
+				String data = nickname +"님이 퇴장하였습니다.";
+				broadcast(data);
+			}
+		
+			private void removeWriter(Writer writer) {
+				listWriters.remove(writer);
+			}
+	
+			private void log(String string) {
+				System.out.println(string);
+					
+				}
+			
+	
+	}
