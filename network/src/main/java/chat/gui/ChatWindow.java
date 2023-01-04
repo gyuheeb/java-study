@@ -22,6 +22,7 @@ import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
+import chat.ChatClientThread;
 import chat.ChatServer;
 
 public class ChatWindow {
@@ -31,13 +32,22 @@ public class ChatWindow {
 	private Button buttonSend;
 	private TextField textField;
 	private TextArea textArea;
+	private String name;
+	private BufferedReader br;
+	private PrintWriter pw;
+	
+	
 
-	public ChatWindow(String name) {
+	public ChatWindow(String name, BufferedReader br, PrintWriter pw) {
 		frame = new Frame(name);
 		pannel = new Panel();
 		buttonSend = new Button("Send");
 		textField = new TextField();
 		textArea = new TextArea(30, 80);
+		this.name=name;
+		this.br=br;
+		this.pw=pw;
+		new ChatClientThread(br).start();
 	}
 
 	public void show() {
@@ -88,6 +98,8 @@ public class ChatWindow {
 	}
 	private void finish() {
 		//quit protocol 구현
+		pw.println("quit");
+		
 			System.exit(0);
 		
 		//exit java(Application)
@@ -98,13 +110,23 @@ public class ChatWindow {
 	
 	private void sendMessage() {
 		String message = textField.getText();	
-		System.out.println("메세지 보내는 프로토콜 "+ message);
+		System.out.println("메세지 보내는 프로토콜 : "+ message);
 		
-		textField.setText(" ");  //70-71 입력창 reset
+		textField.setText("");  //70-71 입력창 reset
 		textField.requestFocus();
 		
 		// ChatClientThread 에서 서버로 부터 받은 메세지가 있다 치고
-		updateTextArea("마이콜"+message);
+//		updateTextArea(name+" : "+message);
+		
+		if(message.equals("quit")) {
+			finish();
+		}else if(message.equals("")) {
+			
+		}else {
+			pw.println("message:"+message);
+		}
+		
+	
 	}
 	private void updateTextArea(String message) {
 		textArea.append(message);
@@ -112,56 +134,27 @@ public class ChatWindow {
 		
 	}
 	private class ChatClientThread extends Thread {
-		
-		Socket socket;
-		Vector<Socket> vec;
-		public ChatClientThread(Socket socket, Vector<Socket>vec) {
-			this.socket =socket;
-			this.vec = vec;
+		BufferedReader br;
+		public ChatClientThread(BufferedReader br) {
+			this.br = br;
+			
 		}
 	@Override 
 	public void run() {
-			BufferedReader br =null;
-		try {
-			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			
-			String message =null;
-
-			while(true) { 
-				 message = br.readLine();
-				 if(message == null) {
-					 vec.remove(socket);
-					 break;
-				 }
-				 log(message);
-			}
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}finally {
-			try {
-				if(br!=null)
-					br.close();
-				if(socket !=null)
-					socket.close();
-			}catch(IOException e) {
-				System.out.println(e.getMessage());
-			}
-		}
-		updateTextArea("안녕");
-	}
-	private void log(String message) {
-		try{
-			for(Socket socket:vec) {
+		String message = null;
 		
-			if(socket != this.socket) {
-				PrintWriter pw = new PrintWriter(socket.getOutputStream(),true);
-				pw.println(message);
-				pw.flush();
-			}}
+		while(true) {
+			try {
+				message = br.readLine();
+				System.out.println(message);
+				updateTextArea(message);
+			} catch (IOException e) {
+				System.out.println(".....");
+				e.printStackTrace();
+			}
+			
 		}
-	catch(IOException e) {
-		System.out.println(e.getMessage());
+			
 	}
-	}
-	}
-	}
+}
+}

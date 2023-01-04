@@ -64,6 +64,8 @@ public class ChatServerThread extends Thread {
 			addWriter(writer);
 			//ack
 			printWriter.println("join:ok");
+			printWriter.flush();
+			System.out.println("join:ok");
 		
 			
 			
