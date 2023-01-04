@@ -34,7 +34,7 @@ public class ChatServerThread extends Thread {
 				while(true) {
 					String request = bufferedReader.readLine();
 					if(request == null) {
-						ChatServer.log("클라이언트로 부터 연결 끊김");
+						ChatServer.log("채팅방을 나갔습니다.");
 						doQuit(printWriter);
 						break;
 						}
@@ -83,12 +83,12 @@ public class ChatServerThread extends Thread {
 					}
 				}
 			}
-			private void doMessage (String message) throws IOException {
+			private void doMessage (String message) {
 				String data = message;
 				broadcast(data);
 			}
 		
-			private void doQuit(Writer writer) throws IOException{
+			private void doQuit(Writer writer){
 				removeWriter(writer);
 				String data = nickname +"님이 퇴장하였습니다.";
 				broadcast(data);

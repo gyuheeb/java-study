@@ -1,4 +1,4 @@
-package chat.gui;
+ package chat.gui;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
@@ -12,6 +12,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
+import java.util.Vector;
+
+import chat.ChatServer;
 
 public class ChatWindow {
 
@@ -77,9 +88,10 @@ public class ChatWindow {
 	}
 	private void finish() {
 		//quit protocol 구현
+			System.exit(0);
 		
 		//exit java(Application)
-		System.exit(0);
+	
 		//x누르면 창 닫기
 		
 	}
@@ -100,12 +112,56 @@ public class ChatWindow {
 		
 	}
 	private class ChatClientThread extends Thread {
-	@Override
+		
+		Socket socket;
+		Vector<Socket> vec;
+		public ChatClientThread(Socket socket, Vector<Socket>vec) {
+			this.socket =socket;
+			this.vec = vec;
+		}
+	@Override 
 	public void run() {
-		//String message = br.readLine();
-		//
-		//
+			BufferedReader br =null;
+		try {
+			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+			String message =null;
+
+			while(true) { 
+				 message = br.readLine();
+				 if(message == null) {
+					 vec.remove(socket);
+					 break;
+				 }
+				 log(message);
+			}
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}finally {
+			try {
+				if(br!=null)
+					br.close();
+				if(socket !=null)
+					socket.close();
+			}catch(IOException e) {
+				System.out.println(e.getMessage());
+			}
+		}
 		updateTextArea("안녕");
 	}
+	private void log(String message) {
+		try{
+			for(Socket socket:vec) {
+		
+			if(socket != this.socket) {
+				PrintWriter pw = new PrintWriter(socket.getOutputStream(),true);
+				pw.println(message);
+				pw.flush();
+			}}
+		}
+	catch(IOException e) {
+		System.out.println(e.getMessage());
 	}
-}
+	}
+	}
+	}

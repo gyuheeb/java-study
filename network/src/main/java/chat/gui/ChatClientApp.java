@@ -5,6 +5,7 @@ public class ChatClientApp {
 
 	public static void main(String[] args) {
 		String name = null;
+		String name2 =null;
 		Scanner scanner = new Scanner(System.in);
 
 		while( true ) {
@@ -12,6 +13,10 @@ public class ChatClientApp {
 			System.out.println("대화명을 입력하세요.");
 			System.out.print(">>> ");
 			name = scanner.nextLine();
+			
+			System.out.println("대화명을 입력하세요.");
+			System.out.print(">>> ");
+			name2 = scanner.nextLine();
 			
 			if (!name.isEmpty()) {
 				break;
@@ -30,6 +35,7 @@ public class ChatClientApp {
 		
 		}
 		new ChatWindow(name).show();
+		new ChatWindow(name2).show();
 		scanner.close();
 
 		
