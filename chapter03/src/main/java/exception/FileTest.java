@@ -1,7 +1,8 @@
+package exception;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileInputStream; 
-import java.io.IOException;
+
 
 public class FileTest {
 
@@ -19,15 +20,16 @@ public class FileTest {
 			System.out.println("erro:" +e);
 			e.printStackTrace();
 		}finally {
+			try {
 			if(fis != null) {
 				fis.close();
 			}
 			fis.close();
-		}catch (IOException e){
+			}catch (IOException e){
 			e.printStackTrace();
 		}
 
 	}
 	
-
+	}
 }
