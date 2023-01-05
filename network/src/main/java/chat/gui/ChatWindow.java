@@ -71,7 +71,7 @@ public class ChatWindow {
 					sendMessage();
 				}
 			}
-		});   //45-53 enter 시, send가능
+		});   //enter 시, send가능
 
 		// Pannel
 		pannel.setBackground(Color.LIGHT_GRAY);
@@ -91,38 +91,28 @@ public class ChatWindow {
 		});
 		frame.setVisible(true);
 		frame.pack();
-		
-		//IOStream 받아오기 
-		//ChatClientThread 생성하고 실행
-		
+
 	}
 	private void finish() {
 		//quit protocol 구현
 		pw.println("quit");
-		
 			System.exit(0);
-		
-		//exit java(Application)
-	
-		//x누르면 창 닫기
-		
 	}
 	
 	private void sendMessage() {
 		String message = textField.getText();	
 		System.out.println("메세지 보내는 프로토콜 : "+ message);
 		
-		textField.setText("");  //70-71 입력창 reset
+		textField.setText("");  // 입력창 reset
 		textField.requestFocus();
-		
-		// ChatClientThread 에서 서버로 부터 받은 메세지가 있다 치고
-//		updateTextArea(name+" : "+message);
+
 		
 		if(message.equals("quit")) {
 			finish();
 		}else if(message.equals("")) {
 			
-		}else {
+		}
+		else {
 			pw.println("message:"+message);
 		}
 		
@@ -149,7 +139,6 @@ public class ChatWindow {
 				System.out.println(message);
 				updateTextArea(message);
 			} catch (IOException e) {
-				System.out.println(".....");
 				e.printStackTrace();
 			}
 			

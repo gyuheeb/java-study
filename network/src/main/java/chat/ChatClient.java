@@ -2,7 +2,6 @@
 package chat;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -16,7 +15,6 @@ import java.util.Scanner;
 public class ChatClient {
 
 	private static Socket socket;
-
 	private static final int PORT = 9000;
 
 	public static void main(String[] args) {
@@ -51,9 +49,10 @@ public class ChatClient {
 				if ("quit".equals(message))
 		               break;
 				pw.println("message:" + message);
-
+				
+		
 			}
-			//pw.println();
+			
 
 		} catch (SocketException e) {
 			System.out.println("[Client] socket disconnected" + e);

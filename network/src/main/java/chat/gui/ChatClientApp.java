@@ -23,7 +23,7 @@ public class ChatClientApp {
 		Socket socket = new Socket();
 
 		try {
-						socket.connect(new InetSocketAddress("0.0.0.0", PORT));
+			socket.connect(new InetSocketAddress("0.0.0.0", PORT));
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"utf-8"));
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
@@ -43,35 +43,21 @@ public class ChatClientApp {
 			pw.println("join:" + name);
 			String line = br.readLine();
 			System.out.println(line);
-//			String line = "join:ok";
-			
+	
 			if ("join:ok".equals(line)) {
 				new ChatWindow(name,br,pw).show();
 			}
 			String message=null;
 			while (true) {
 				
-				message = scanner.nextLine();
-				if ("quit".equals(message))
-		               break;
-				pw.println("message:" + message);
-
 			}
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-
-		// 3. get iostream
-
-		// 4.join protocol
-
-		
 		scanner.close();
 	}
 
-	/*-------------------------------------------------------------------------------*/
 	private static void log(String message) {
 		System.out.println("[ChatServer ] " + message);
-
 	}
 }
