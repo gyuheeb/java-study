@@ -14,16 +14,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.SocketException;
-import java.nio.charset.StandardCharsets;
-import java.util.Vector;
 
-import chat.ChatClientThread;
-import chat.ChatServer;
 
 public class ChatWindow {
 
@@ -135,6 +127,7 @@ public class ChatWindow {
 		
 		while(true) {
 			try {
+				
 				message = br.readLine();
 				System.out.println(message);
 				updateTextArea(message);
