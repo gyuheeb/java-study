@@ -100,7 +100,7 @@ public class ChatWindow {
 
 		
 		if(message.equals("quit")) {
-			finish();
+			finish(); //quit 입력시 창 꺼짐
 		}else if(message.equals("")) {
 			
 		}
@@ -127,7 +127,6 @@ public class ChatWindow {
 		
 		while(true) {
 			try {
-				
 				message = br.readLine();
 				System.out.println(message);
 				updateTextArea(message);

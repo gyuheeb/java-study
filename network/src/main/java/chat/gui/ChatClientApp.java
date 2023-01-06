@@ -47,16 +47,11 @@ public class ChatClientApp {
 			if ("join:ok".equals(line)) {
 				new ChatWindow(name,br,pw).show();
 			}
-			String message=null;
-			while (true) {
-				
-			}
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 		scanner.close();
 	}
-
 	private static void log(String message) {
 		System.out.println("[ChatServer ] " + message);
 	}
