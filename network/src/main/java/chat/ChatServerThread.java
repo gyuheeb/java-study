@@ -8,8 +8,6 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 //port 마음대로
@@ -19,12 +17,6 @@ public class ChatServerThread extends Thread {
 	private Socket socket;
 	PrintWriter printWriter = null;
 	BufferedReader bufferedReader=null;
-	 // 현재 시간
-    LocalTime now = LocalTime.now();
-    // 포맷 정의하기
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분 ss초");
-    // 포맷 적용하기
-    String formatedNow = now.format(formatter);
 	
 	public ChatServerThread(Socket socket, List<Writer> listWriters) {
 		
@@ -64,8 +56,8 @@ public class ChatServerThread extends Thread {
 		
 		private void doJoin(String nickname, Writer writer) {
 			this.nickname=nickname;
-			String data = nickname + "님이 참여하였습니다.     "+formatedNow ;
-			System.out.println(nickname + "님 참여      "+formatedNow);
+			String data = nickname + "님이 참여하였습니다." ;
+			System.out.println(nickname + "님 참여");
 			
 			broadcast(data);
 			/*writer pool에 저장*/
@@ -115,3 +107,4 @@ public class ChatServerThread extends Thread {
 			
 	
 	}
+
