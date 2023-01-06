@@ -1,8 +1,7 @@
 package chat;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -17,15 +16,12 @@ public class ChatServer {
 	
 	public static void main(String[] args) {
 		
-		BufferedReader br =null;
-		PrintWriter pw =null;
-		Socket socket = null;
 		ServerSocket serverSocket =null;
 		Scanner scanner =null;
 		
 		
 		try {		
-			socket = new Socket();
+			
 			serverSocket =new ServerSocket();
 
 			List<Writer> listWriters = new ArrayList<>();
@@ -35,6 +31,7 @@ public class ChatServer {
 			log("start...[PORT :" + PORT + "]");
 	
 		while ( true ) {
+			Socket socket = new Socket();
 			socket = serverSocket.accept();
 			
 			new ChatServerThread(socket, listWriters).start();
